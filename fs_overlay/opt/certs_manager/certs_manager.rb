@@ -56,6 +56,7 @@ class CertsManager
           mkdir(domain)
           OpenSSL.ensure_domain_key(domain)
           OpenSSL.create_csr(domain)
+          OpenSSL.create_san(domain)
           if ACME.sign(domain)
             chain_certs(domain)
             Nginx.config_ssl(domain)

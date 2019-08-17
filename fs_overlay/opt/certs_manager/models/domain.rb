@@ -31,6 +31,10 @@ class Domain
     File.join(dir, 'domain.key')
   end
 
+  def san_path
+    File.join(dir, 'san.ext')
+  end
+
   def htaccess_path
     File.join(dir, 'htaccess')
   end

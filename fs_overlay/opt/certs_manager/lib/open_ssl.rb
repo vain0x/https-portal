@@ -18,6 +18,10 @@ module OpenSSL
     system "openssl req -new -sha256 -key #{domain.key_path} -subj '/CN=#{domain.name}' > #{domain.csr_path}"
   end
 
+  def self.create_san(domain)
+    system "echo subjectAltName=DNS:#{domain.name} > #{domain.san_path}"
+  end
+
   def self.need_to_sign_or_renew?(domain)
     return true if NAConfig.force_renew?
 
@@ -47,6 +51,7 @@ module OpenSSL
     openssl x509 -req -days 90 \
       -in #{domain.csr_path} \
       -signkey #{domain.key_path} \
+      -extfile #{domain.san_path} \
       -out #{domain.signed_cert_path}
     EOC
 
